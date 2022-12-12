@@ -1,113 +1,69 @@
 #include <stdio.h>
-#include <string.h>
-#define NAME_SIZE 50
-#define NUM_SIZE 50
-#define GROUP_SIZE 50
 
-enum clas {
-   SW, HW, COM
-};
+int n;
 
-typedef struct stu {
-   char name[NAME_SIZE];
-   char number[NUM_SIZE];
-   char group[GROUP_SIZE];
-   enum clas depart;
-}STU;
-
-void add(STU library[], int count);
-void menu();
-int input();
-void search(STU library[], int count);
-void print(STU library[], int count);
-
-int main() {
-   int num, count=0;
-   STU library[30] = {'\0'};
-   while(1) {
-      menu();
-      num = input();
-      switch(num) {
-         case 1:
-         add(library, count);
-         count++;
-         continue;
-
-         case 2:
-         print(library, count);
-         continue;
-
-         case 3:
-         search(library, count);
-         continue;
-
-         case 4:
-         return -1;
-      }
-      return 0;
-   }
-}
-
-void add(STU library[], int count) {
-   int type;
-   fflush(stdin);
-   printf("이름 : ");
-   gets(library[count].name);
-   printf("반 : ");
-   gets(library[count].group);
-   printf("번호 : ");
-   gets(library[count].number);
-   printf("학과 (1.소프트웨어개발과, 2.임베디드소프트웨어과, 3.공통과정) : ");
-   scanf("%d", &type);
-   if(type >= SW && type <= COM)
-    library[count].depart = type;
-   else
-   library[count].depart = SW;
-}
-
-void menu() {
-   printf("===============\n");
-   printf(" 1. 추가\n");
-   printf(" 2. 출력\n");
-   printf(" 3. 검색\n");
-   printf(" 4. 종료\n");
-   printf("===============\n");
-}
-
-int input() {
-   int num;
-   printf("원하는 서비스의 번호를 입력하세요 : ");
-   scanf("%d", &num);
-   return num;
-}
-
-void search(STU library[], int count) {
-   int i;
-   char name[NAME_SIZE];
-   fflush(stdin);
-   printf("이름 : ");
-   gets(name);
-   for(i=0; i<count; i++) {
-      if(strcmp(name, library[i].name) == 0) {
-         printf("해당 학생의 반은 %s\n", library[i].group);
-         return;
+void a_student(int arr[])
+{
+   int i, j, tmp = 0;
+   for (i = 0; i < n; i++)
+   {
+      for (j = i; j < n; j++)
+      {
+         if (arr[i] > arr[j])
+         {
+            tmp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = tmp;
+         }
       }
    }
-   printf("찾는 신입생이 없습니다.\n");
 }
 
-void print(STU library[], int count) {
-   int i;
-   fflush(stdin);
-   for(i=0; i<count; i++) {
-      printf("이름 : %s\n", library[i].name);
-      printf("반 : %s\n", library[i].group);
-      printf("번호 : %s\n", library[i].number);
-      if(library[i].depart == 1)
-        printf("소프트웨어개발과\n");
-      else if(library[i].depart == 2)
-        printf("임베디드소프트웨어과\n");
-      else
-        printf("공통과정\n");
+void b_student(int arr[])
+{
+   int i, j, tmp = 0;
+   for (i = 0; i < n; i++)
+   {
+      for (j = i; j < n; j++)
+      {
+         if (arr[i] < arr[j])
+         {
+            tmp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = tmp;
+         }
+      }
    }
+}
+
+int main()
+{
+   int arr[100];
+   int select;
+   int i, tmp = 0;
+   printf("신입생 수를 알려주세요!: ");
+   scanf("%d", &n);
+   printf("신입생 번호를 입력해주세요! : ");
+   for (i = 0; i < n; i++)
+      scanf("%d", &arr[i]);
+   printf("메뉴: 1 - 오름차순 정렬, 2 - 내림차순 정렬 \n");
+   printf("선택 : ");
+   scanf("%d", &select);
+
+   switch (select)
+   {
+   case 1:
+      a_student(arr);
+      break;
+   case 2:
+      b_student(arr);
+      break;
+   default:
+      printf("잘못 입력하셨습니다.");
+      break;
+   }
+   printf("결과 : ");
+   for (i = 0; i < n; i++)
+      printf("%d ", arr[i]);
+   printf("\n");
 }
